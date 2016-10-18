@@ -53,7 +53,7 @@ public class TestDays extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testConstants() {
-        assertEquals(0, Days.ZERO.getDays());
+        assertEquals(1, Days.ZERO.getDays());
         assertEquals(1, Days.ONE.getDays());
         assertEquals(2, Days.TWO.getDays());
         assertEquals(3, Days.THREE.getDays());
