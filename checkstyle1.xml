@@ -6,7 +6,7 @@
 
 <!-- 	<property name="fileExtensions" value="java, properties, xml"/>
  -->
-	<!-- <module name="JavadocPackage"/>
+	<module name="JavadocPackage"/>
 	<module name="NewlineAtEndOfFile"/>
 	<module name="Translation"/>
 	<module name="FileLength"/>
@@ -16,10 +16,10 @@
 		<property name="minimum" value="0"/>
 		<property name="maximum" value="0"/>
 		<property name="message" value="Line has trailing spaces."/>
-	</module> -->
+	</module>
 	<module name="TreeWalker">
 
-		<!-- <module name="JavadocMethod"/>
+		<module name="JavadocMethod"/>
 		<module name="JavadocType"/>
 		<module name="JavadocVariable"/>
 		<module name="JavadocStyle"/>
@@ -36,11 +36,11 @@
 		<module name="IllegalImport"/>
 		<module name="RedundantImport"/>
 		<module name="UnusedImports"/>
-		<module name="LineLength"/> -->
+		<module name="LineLength"/>
 		<module name="MethodLength">
 		   <property name="max" value="40"/>
 		</module>
-		<!-- <module name="ParameterNumber"/>
+		<module name="ParameterNumber"/>
 		<module name="EmptyForIteratorPad"/>
 		<module name="GenericWhitespace"/>
 		<module name="MethodParamPad"/>
@@ -50,12 +50,12 @@
 		<module name="ParenPad"/>
 		<module name="TypecastParenPad"/>
 		<module name="WhitespaceAfter"/>
-		<module name="WhitespaceAround"/> -->
+		<module name="WhitespaceAround"/>
 		<module name="BooleanExpressionComplexity">
    			<property name="max" value="5"/>
 		</module>
 
-		<!-- <module name="ModifierOrder"/>
+		<module name="ModifierOrder"/>
 		<module name="RedundantModifier"/>
 
 		<module name="AvoidNestedBlocks"/>
@@ -82,6 +82,6 @@
 		<module name="ArrayTypeStyle"/>
 		<module name="FinalParameters"/>
 		<module name="TodoComment"/>
-		<module name="UpperEll"/> -->
+		<module name="UpperEll"/>
 	</module>
 </module>
