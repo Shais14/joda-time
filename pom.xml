@@ -12,7 +12,6 @@
   <version>2.9.5-SNAPSHOT</version>
   <description>Date and time library to replace JDK date handling</description>
   <url>http://www.joda.org/joda-time/</url>
-
   <!-- ==================================================================== -->
   <issueManagement>
     <system>GitHub</system>
