@@ -57,8 +57,8 @@ checkstyle:checkstyle by  checkstyle:checkstyle check in the top level maven goa
 ##Demo
 
 Here is a screencast of a successful build:
-![Screenshot: report for test coverage of subject.js ](/Screenshot/subject report)
+https://youtu.be/Up5ydmWNS2M
 
 Here is a screencast of an un-successful build:
-![Screenshot: report for test coverage of subject.js ](/Screenshot/subject report)
+https://youtu.be/YFuxJjjpxKk
 
