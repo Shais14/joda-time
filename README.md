@@ -1,85 +1,64 @@
-Joda-Time
----------
+# DevOps-HW2
+This project shows how to create a testing component and an analysis component that ensures  the correctness of a commit. We are using open source project Joda-Time (https://github.com/JodaOrg/joda-time) to develop the required CI components.
 
-Joda-Time provides a quality replacement for the Java date and time classes.
-The design allows for multiple calendar systems, while still providing a simple API.
-The 'default' calendar is the ISO8601 standard which is used by XML.
-The Gregorian, Julian, Buddhist, Coptic, Ethiopic and Islamic systems are also included, and we welcome further additions.
-Supporting classes include time zone, duration, format and parsing. 
+## Capabilities
 
-As a flavour of Joda-Time, here's some example code:
+The build server is created on an Amazon EC2 instance and uses Jenkins as the Continuous Integration tool and testing tools are added to check the coverage report and analysis of the errors (if any).
+The testing and analysis component :
+- Runs unit tets, measures the coverage and reports the results. Tool used is Cobertura.
+- Test cases are generated using Randoop as a measure for advanced testing.
+- Checkstyle is used to cover the basic static analysis and report the findings.
+- A post commit hook is used as a gate to reject failing builds. Instead a previous build which resulted in a successful build is run so that you always have a asuccessful build.
+- For custom metrics, the max number of conditions within an if statement and the maximum length of a method are being handled by features from checktyle. and for checking that no security token is being committed to the giit repo, a pre commit hook is being used.
 
-```java
-public boolean isAfterPayDay(DateTime datetime) {
-  if (datetime.getMonthOfYear() == 2) {   // February is month 2!!
-    return datetime.getDayOfMonth() > 26;
-  }
-  return datetime.getDayOfMonth() > 28;
-}
 
-public Days daysToNewYear(LocalDate fromDate) {
-  LocalDate newYear = fromDate.plusYears(1).withDayOfYear(1);
-  return Days.daysBetween(fromDate, newYear);
-}
+##Build
 
-public boolean isRentalOverdue(DateTime datetimeRented) {
-  Period rentalPeriod = new Period().withDays(2).withHours(12);
-  return datetimeRented.plus(rentalPeriod).isBeforeNow();
-}
+The build server is hosted on an Amazon EC2 instance where in Jenkins is installed as a CI tool. To install Jenkins on an EC2 instance, the EC2 instance must have a security group defined which allows inbound and outbound traffic over ssh, smtp, http protocols. For the project, a new git repository is created (this one) which is then cloned locally. In the local directory, a maven project is initialized. This generates a pom.xml file which takes care of the dependencies needed for the project. 
 
-public String getBirthMonthText(LocalDate dateOfBirth) {
-  return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
-}
+##Installation Instructions 
+
+- Clone the repository in a local folder
+```
+git clone https://github.ncsu.edu/sshaikh2/joda-time
 ```
 
-Joda-Time is licensed under the business-friendly [Apache 2.0 licence](http://www.joda.org/joda-time/license.html).
+### Configuring Jenkins
 
+To configure Jenkins
+- Install Github plugin, Maven Plugin, Cobertura plugin, Checkstyle plugin and Randoop Plugin
+- As an SCM, Jenkins is linked with a git repository (this one).
+- Maven commands 'clean' and 'install' - which are used for ensuring a clean build each time.
+- In execute shell field, configure randoop by the following command
+	-java -cp randoop-all-3.0.6.jar:target/classes randoop.main.Main gentests --classlist=Classes.txt --junit-output-dir=src/test/java/org/joda/time/  --timelimit=10
+- To invoke top level Maven projects, the goals are:
+	-test
+	-install
+	-cobertura:cobertura -Dcobertura.report.format=xml
+	-checkstyle:checkstyle
+- In the Post-build Actions, add 
+	- Publish Checkstyle analysis results and in the field enter: **/target/checkstyle-result.xml
+	- Publish Cobertura Coverage report and in the field enter: **/target/site/cobertura/coverage.xml
 
-### Documentation
-Various documentation is available:
+### Points to note
 
-* The [home page](http://www.joda.org/joda-time/)
-* Two user guides - [quick](http://www.joda.org/joda-time/quickstart.html) and [full](http://www.joda.org/joda-time/userguide.html)
-* The [Javadoc](http://www.joda.org/joda-time/apidocs/index.html)
-* The [FAQ](http://www.joda.org/joda-time/faq.html) list
-* Information on [downloading and installing](http://www.joda.org/joda-time/installation.html) Joda-Time including release notes
-
-
-### Releases
-[Release 2.9.4](http://www.joda.org/joda-time/download.html) is the current latest release.
-This release is considered stable and worthy of the 2.x tag.
-It depends on JDK 1.5 or later.
-
-Available in the [Maven Central repository](http://search.maven.org/#artifactdetails|joda-time|joda-time|2.9.4|jar)
-
-**Maven configuration:**
-```xml
-<dependency>
-  <groupId>joda-time</groupId>
-  <artifactId>joda-time</artifactId>
-  <version>2.9.4</version>
-</dependency>
+- For custom metrics using checkstyle, the checkstyle.xml file (in the root directory of the project) must contain,
 ```
-
-**Gradle configuration:**
-```groovy
-compile 'joda-time:joda-time:2.9.4'
+<module name="BooleanExpressionComplexity">
+   	<property name="max" value="5"/>
+</module>
+<module name="MethodLength">
+   <property name="max" value="40"/>
+</module>
 ```
+- By defualt, the checkstyle plugin reports the warnings but it doesn't reject the commit. To enforce a hard check on the commits (reject the commits), replace
+checkstyle:checkstyle by  checkstyle:checkstyle check in the top level maven goals.
 
-### Related projects
-Related projects at GitHub:
-- https://github.com/JodaOrg/joda-time-hibernate
-- https://github.com/JodaOrg/joda-time-jsptags
-- https://github.com/JodaOrg/joda-time-i18n
+##Demo
 
-Other related projects:
-- http://www.joda.org/joda-time/related.html
+Here is a screencast of a successful build:
+![Screenshot: report for test coverage of subject.js ](/Screenshot/subject report)
 
+Here is a screencast of an un-successful build:
+![Screenshot: report for test coverage of subject.js ](/Screenshot/subject report)
 
-### Support
-Please use GitHub issues and Pull Requests for support.
-
-
-### History
-Issue tracking and active development is at GitHub.
-Historically, the project was at [Sourceforge](https://sourceforge.net/projects/joda-time/).
