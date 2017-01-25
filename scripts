@@ -4,7 +4,7 @@
 git push origin master
 
 echo "Checking Build Status"
-curl --user devops:devops -s http://54.149.236.198:8080/job/Milestone2/build?token=postCommitCheckToken
+curl --user devops:devops -s http://54.149.236.198:8080/job/Milestone2/build?token=<jenkinstoken>
 
 echo "Getting Build Status"
 sleep 20
